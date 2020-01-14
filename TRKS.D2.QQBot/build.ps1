@@ -4,7 +4,7 @@ properties {
     $nugetexe = "$rootNow\buildTools\NuGet.exe"
     $configuration = "Debug"
     $releaseBase = "$rootNow\bin"
-    $pluginName = (Get-ChildItem *.csproj).Name.Replace(".csproj", "")
+    $pluginName = "trks.d2.qqbot"
 }
 
 $InstalledPlatforms = Get-ChildItem NewbeLibs\Platform
@@ -58,15 +58,16 @@ Task Nuget -depends Init -Description "nuget restore" {
 
 Task Build -depends Nuget -Description "编译" {
     Exec {
-        msbuild /p:Configuration=$configuration
+        &"K:\Visual Studio\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild.exe"
     }
 }
 
 # 生成CQP的JSON文件
 function WriteCqpJsonFile ($targetFilePath) {
     # 加载所有的DLL
+
     Get-ChildItem  "$releaseBase\$configuration\*" *.dll | ForEach-Object {
-       [void][reflection.assembly]::LoadFile($_)
+		try{       [void][reflection.assembly]::LoadFile($_)}catch{}
    }
 
    # 创建实例

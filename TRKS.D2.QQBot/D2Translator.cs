@@ -13,6 +13,7 @@ namespace TRKS.D2.QQBot
         public D2Translator()
         {
             db = new D2MongoDB();
+            Config.Save();
         }
 
         private static DateTime GetRealTime(DateTime time)
@@ -23,7 +24,7 @@ namespace TRKS.D2.QQBot
         public void TranslatePlayerInfo(D2Objects.PlayerInfo info)
         {
 
-            foreach (var chara in info.Response.characters.data.characters)
+            foreach (var chara in info.Response.characters.data.Values)
             {
                 chara.type = db.GetCharacterType(chara.genderHash, chara.raceHash, chara.classHash);
                 chara.dateLastPlayed = GetRealTime(chara.dateLastPlayed);

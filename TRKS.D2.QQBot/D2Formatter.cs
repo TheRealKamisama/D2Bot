@@ -14,8 +14,9 @@ namespace TRKS.D2.QQBot
         public static string ToString(D2Objects.PlayerInfo info)
         {
             var sb = new StringBuilder();
-            sb.AppendLine($"1.[{info.Response.profile.data.userInfo.displayName}] ");
-            foreach (var chara in info.Response.characters.data.characters)
+            sb.AppendLine();
+            sb.Append($"[{info.Response.profile.data.userInfo.displayName}({info.Response.profile.data.userInfo.membershipId})] ");
+            foreach (var chara in info.Response.characters.data.Values)
             {
                 sb.Append($"{chara.type}-{chara.light} ");
             }

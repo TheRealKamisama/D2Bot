@@ -71,19 +71,20 @@ namespace TRKS.D2.QQBot
             var sw = Stopwatch.StartNew();
             try
             {
-                var count = 2;
-                while (count-- > 0)
+                int i;
+                for (i = 0; i < 3; i++)
                 {
                     try
                     {
                         return new HttpClient().GetStringAsync(url).Result.JsonDeserialize<T>();
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
+                        Console.WriteLine(e);
                     }
                 }
 
-                if (throwException)
+                if (i >= 3 )
                 {
                     throw new WebException($"在下载[{url}]时多次遇到问题. 请检查你的网络是否正常或联系项目负责人.");
                 }
@@ -117,6 +118,7 @@ namespace TRKS.D2.QQBot
         public static async Task<T> DownloadJsonAsync<T>(string url)
         {
             var sw = Stopwatch.StartNew();
+
             try
             {
                 var count = 3;
@@ -125,6 +127,41 @@ namespace TRKS.D2.QQBot
                     try
                     {
                         return (await webClient.Value.DownloadStringTaskAsync(url)).JsonDeserialize<T>();
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+                throw new WebException($"在下载[{url}]时多次遇到问题. 请检查你的网络是否正常或联系项目负责人.");
+            }
+            finally
+            {
+                Trace.WriteLine($"Download data completed: URL [{url}], Time [{sw.ElapsedMilliseconds}ms].", "Downloader");
+            }
+        }
+        public static async Task<T> DownloadJsonAsync<T>(string url, WebHeaderCollection header)
+        {
+            var sw = Stopwatch.StartNew();
+            var wc = new ThreadLocal<WebClient>(() =>
+            {
+                var client = new WebClientEx2();
+                client.Headers = header;
+                    client.DownloadStringCompleted += (sender, args) =>
+                {
+                    Trace.WriteLine(
+                        $"Download data completed: Size [{Encoding.UTF8.GetByteCount(args.Result) / 1024.0:N1}KB].",
+                        "Downloader");
+                };
+                return client;
+            });
+            try
+            {
+                var count = 3;
+                while (count-- > 0)
+                {
+                    try
+                    {
+                        return (await wc.Value.DownloadStringTaskAsync(url)).JsonDeserialize<T>();
                     }
                     catch (Exception)
                     {

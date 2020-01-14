@@ -51,7 +51,7 @@ namespace TRKS.D2.QQBot
                 builder.RegisterType<GroupMessageReceivedMahuaEvent1>()
                     .As<IGroupMessageReceivedMahuaEvent>();
                 builder.RegisterType<PrivateMessageReceivedMahuaEvent2>()
-                    .As<IGroupMessageReceivedMahuaEvent>();
+                    .As<IPrivateMessageReceivedMahuaEvent>();
             }
         }
     }

@@ -15,9 +15,10 @@ namespace TRKS.D2.QQBot
             var sb = new StringBuilder();
             sb.AppendLine("为您找到以下噶点:");
             var players = _trackerApi.GetPlayers(name);
-            foreach (var player in players)
+            var q = new List<Task<D2Objects.PlayerInfo>>();
+            foreach (var player in players.data)
             {
-                var info = _bungieApi.GetPlayerInfo(player.platformUserIdentifier);
+                var info = _bungieApi.GetPlayerInfoAsync(player.platformUserIdentifier);
                 sb.AppendLine($"    {D2Formatter.ToString(info)}");
             }
             Messenger.SendGroup(group, sb.ToString().Trim());

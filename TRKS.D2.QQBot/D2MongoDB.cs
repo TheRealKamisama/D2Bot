@@ -38,9 +38,9 @@ namespace TRKS.D2.QQBot
             return item.GetValue("displayProperties").ToBsonDocument().GetValue("name").ToString();
         }
 
-        public string GetCharacterType(long genderid, int raceid, long classid)
+        public string GetCharacterType(long genderid, long raceid, long classid)
         {
-            var type = inventoryitem.Find(new BsonDocument
+            var type = charactercustomization.Find(new BsonDocument
             {
                 {"genderHash", genderid },
                 {"raceHash", raceid }

@@ -4,13 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace TRKS.D2.QQBot
 {
     public class D2Objects
     {
-
         public class SearchResult
+        {
+            public SearchData[] data { get; set; }
+        } 
+        public class SearchData
         {
             public int platformId { get; set; }
             public string platformSlug { get; set; }
@@ -83,14 +87,10 @@ namespace TRKS.D2.QQBot
 
         public class Characters
         {
-            public Data1 data { get; set; }
+            public Dictionary<string, Character> data { get; set; }
             public int privacy { get; set; }
         }
 
-        public class Data1
-        {
-            public List<Character> characters { get; set; }
-        }
 
         public class Character
         {
@@ -105,7 +105,7 @@ namespace TRKS.D2.QQBot
             public string minutesPlayedTotal { get; set; }
             public int light { get; set; }
             public Stats stats { get; set; }
-            public int raceHash { get; set; }
+            public long raceHash { get; set; }
             public long genderHash { get; set; }
             public long classHash { get; set; }
             public int raceType { get; set; }
@@ -117,7 +117,7 @@ namespace TRKS.D2.QQBot
             public Emblemcolor emblemColor { get; set; }
             public Levelprogression levelProgression { get; set; }
             public int baseCharacterLevel { get; set; }
-            public int percentToNextLevel { get; set; }
+            public double percentToNextLevel { get; set; }
         }
 
         public class Stats
