@@ -19,14 +19,14 @@ namespace TRKS.D2.QQBot
             translator.TranslatePlayerInfo(info);
             return info;
         }
-        public D2Objects.PlayerInfo GetPlayerInfoAsync(string id)
+        public async Task<D2Objects.PlayerInfo> GetPlayerInfoAsync(string id)
         {
             var header = new WebHeaderCollection();
             header.Add("X-API-Key", Config.Instance.apikey);
-            var info = WebHelper.DownloadJsonAsync<D2Objects.PlayerInfo>(
+            var info = await WebHelper.DownloadJsonAsync<D2Objects.PlayerInfo>(
                 $"https://www.bungie.net/Platform/Destiny2/3/Profile/{id}/?components=100, 101, 102, 103, 200", header);
-            translator.TranslatePlayerInfo(info.Result);
-            return info.Result;
+            translator.TranslatePlayerInfo(info);
+            return info;
         }
     }
 }

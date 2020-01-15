@@ -19,7 +19,7 @@ namespace TRKS.D2.QQBot
             foreach (var player in players.data)
             {
                 var info = _bungieApi.GetPlayerInfoAsync(player.platformUserIdentifier);
-                sb.AppendLine($"    {D2Formatter.ToString(info)}");
+                sb.AppendLine($"    {D2Formatter.ToString(info.Result)}");
             }
             Messenger.SendGroup(group, sb.ToString().Trim());
         }
